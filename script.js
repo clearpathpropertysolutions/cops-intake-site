@@ -1,66 +1,50 @@
 // ==========================
-// CONFIG (ALWAYS AT THE TOP)
+// CONFIG
 // ==========================
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbyJtPo3Bu8_GZsEQ3ypakbhhuUG59t9L4EP9TmSRRo2-TSjzQ0AAQsDy2T0vQr9wi2qDw/exec";
-
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwmBclkjCuaq6kxF3S_IamNie3Mkvf5rhxDZcWFmKwvkm5DseMQsULatzGR4DA1hInGPg/exec";
 
 // ==========================
 // SELLER FORM SUBMIT
 // ==========================
-document.getElementById("sellerForm")?.addEventListener("submit", e => {
+document.getElementById("sellerForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
-
   const form = e.target;
-  const formData = new FormData(form);
-  const values = [];
 
-  formData.forEach(v => values.push(v));
+  const fd = new FormData(form);
+
+  // IMPORTANT: tell Apps Script which sheet to write to
+  fd.append("formType", "seller");
 
   fetch(SHEET_URL, {
     method: "POST",
-    body: JSON.stringify({
-      formType: "seller",
-      values
-    })
-  })
-  .then(() => {
-    document.getElementById("sellerMsg").textContent =
-      "Thanks — we received your property. We'll be in touch.";
-    form.reset();
-  })
-  .catch(() => {
-    document.getElementById("sellerMsg").textContent =
-      "Something went wrong. Please try again.";
+    mode: "no-cors",   // ✅ required for GitHub Pages → Apps Script
+    body: fd
   });
-});
 
+  document.getElementById("sellerMsg").textContent =
+    "✅ Submitted! We received your property.";
+  form.reset();
+});
 
 // ==========================
 // BUYER FORM SUBMIT
 // ==========================
-document.getElementById("buyerForm")?.addEventListener("submit", e => {
+document.getElementById("buyerForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
-
   const form = e.target;
-  const formData = new FormData(form);
-  const values = [];
 
-  formData.forEach(v => values.push(v));
+  const fd = new FormData(form);
+
+  // IMPORTANT: tell Apps Script which sheet to write to
+  fd.append("formType", "buyer");
 
   fetch(SHEET_URL, {
     method: "POST",
-    body: JSON.stringify({
-      formType: "buyer",
-      values
-    })
-  })
-  .then(() => {
-    document.getElementById("buyerMsg").textContent =
-      "Buy box saved. We'll only send deals that fit.";
-    form.reset();
-  })
-  .catch(() => {
-    document.getElementById("buyerMsg").textContent =
-      "Something went wrong. Please try again.";
+    mode: "no-cors",   // ✅ required for GitHub Pages → Apps Script
+    body: fd
   });
+
+  document.getElementById("buyerMsg").textContent =
+    "✅ Saved! We received your buy box.";
+  form.reset();
 });
