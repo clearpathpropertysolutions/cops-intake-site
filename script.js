@@ -1,35 +1,4 @@
 // ==========================
-// CONFIG
-// ==========================
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzAylOvhlPyFChh2pHMEnn97Ghp5zG70aW4S31Qbc-Y-f1JoRynJCdqCm_0rHETw35VOQ/exec";
-
-// ==========================
-// TAB SWITCHING (THIS IS THE MISSING PART)
-// ==========================
-const tabs = document.querySelectorAll("[data-tab]");
-const panels = {
-  seller: document.getElementById("panel-seller"),
-  buyer: document.getElementById("panel-buyer"),
-};
-
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    const target = tab.dataset.tab;
-
-    // activate tab buttons
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-
-    // show correct panel
-    Object.values(panels).forEach(p => p.classList.remove("active"));
-    panels[target].classList.add("active");
-
-    // scroll to forms
-    document.getElementById("forms").scrollIntoView({ behavior: "smooth" });
-  });
-});
-
-// ==========================
 // SELLER FORM
 // ==========================
 document.getElementById("sellerForm")?.addEventListener("submit", e => {
@@ -40,18 +9,22 @@ document.getElementById("sellerForm")?.addEventListener("submit", e => {
 
   fetch(SHEET_URL, {
     method: "POST",
-    body: JSON.stringify({ formType: "SELLER", data })
-  })
-    .then(() => {
-      document.getElementById("sellerMsg").textContent =
-        "Thanks — we received your property.";
-      form.reset();
+    body: JSON.stringify({
+      formType: "Sellers",   // ✅ MATCHES SHEET TAB
+      data
     })
-    .catch(() => {
-      document.getElementById("sellerMsg").textContent =
-        "Error submitting form.";
-    });
+  })
+  .then(() => {
+    document.getElementById("sellerMsg").textContent =
+      "Thanks — we received your property.";
+    form.reset();
+  })
+  .catch(() => {
+    document.getElementById("sellerMsg").textContent =
+      "Error submitting form.";
+  });
 });
+
 
 // ==========================
 // BUYER FORM
@@ -64,15 +37,18 @@ document.getElementById("buyerForm")?.addEventListener("submit", e => {
 
   fetch(SHEET_URL, {
     method: "POST",
-    body: JSON.stringify({ formType: "BUYER", data })
-  })
-    .then(() => {
-      document.getElementById("buyerMsg").textContent =
-        "Buy box saved successfully.";
-      form.reset();
+    body: JSON.stringify({
+      formType: "Buyers",    // ✅ MATCHES SHEET TAB
+      data
     })
-    .catch(() => {
-      document.getElementById("buyerMsg").textContent =
-        "Error submitting form.";
-    });
+  })
+  .then(() => {
+    document.getElementById("buyerMsg").textContent =
+      "Buy box saved successfully.";
+    form.reset();
+  })
+  .catch(() => {
+    document.getElementById("buyerMsg").textContent =
+      "Error submitting form.";
+  });
 });
