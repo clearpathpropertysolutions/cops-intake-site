@@ -1,69 +1,481 @@
-// ==========================
-// CONFIG (PUT YOUR /exec URL)
-// ==========================
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzAylOvhlPyFChh2pHMEnn97Ghp5zG70aW4S31Qbc-Y-f1JoRynJCdqCm_0rHETw35VOQ/exec"; // <-- replace this
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clear Path Property Solutions</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
+<body>
+  <!-- TOP BAR -->
+  <header class="header">
+    <div class="brand">
+      <a class="logo-link" href="#">
+        <img src="logo-clearpath.png" alt="Clear Path Property Solutions" class="logo" />
+      </a>
+      <p class="sub">
+        USA • UK • Ireland — Houses & Land • Probate • Code Violations • Pre-Foreclosure
+      </p>
+    </div>
 
-// ==========================
-// TAB SWITCHING (SELLER / BUYER)
-// ==========================
-const tabs = document.querySelectorAll(".tab");
-const panels = {
-  seller: document.getElementById("panel-seller"),
-  buyer: document.getElementById("panel-buyer"),
-};
+    <div class="header-right">
+      <div class="contact-inline">
+        <a class="contact-pill" href="tel:14199656293">📞 419-965-6293</a>
+        <a class="contact-pill" href="mailto:clearpathpropertysolutions@gmail.com">✉️ clearpathpropertysolutions@gmail.com</a>
+      </div>
 
-function setActiveTab(which) {
-  tabs.forEach(btn => btn.classList.toggle("active", btn.dataset.tab === which));
-  Object.entries(panels).forEach(([key, el]) => {
-    if (!el) return;
-    el.classList.toggle("active", key === which);
-  });
-}
+      <nav class="nav">
+        <a href="#forms">Forms</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-tabs.forEach(btn => {
-  btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
-});
+  <main class="container">
 
-// Default tab
-setActiveTab("seller");
+    <!-- HERO -->
+    <section class="hero2">
+      <div class="hero2__overlay"></div>
+      <img class="hero2__bg" src="thumb-1.jpg" alt="Property" />
 
+      <div class="hero2__content">
+        <h2>Submit a Property • Share Your Buy Box</h2>
+        <p>
+          Sellers: send property details for review. Buyers: submit your criteria and get matched opportunities.
+        </p>
 
-// ==========================
-// SELLER FORM SUBMIT
-// ==========================
-document.getElementById("sellerForm")?.addEventListener("submit", (e) => {
-  e.preventDefault();
+        <div class="hero2__cta">
+          <button class="btn gold" type="button" data-tab="seller">Sell a Property</button>
+          <button class="btn btn-outline" type="button" data-tab="buyer">Buyer Buy Box</button>
+        </div>
+      </div>
+    </section>
 
-  const fd = new FormData(e.target);
-  fd.append("formType", "seller");
+    <!-- GALLERY STRIP -->
+    <section class="gallery">
+      <img src="thumb-1.jpg" alt="Property 1" />
+      <img src="thumb-2.jpg" alt="Property 2" />
+      <img src="thumb-3.png" alt="Property 3" />
+    </section>
 
-  fetch(SHEET_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: fd
-  });
+    <!-- FORMS -->
+    <section id="forms" class="formShell">
+      <div class="tabs">
+        <button class="tab active" type="button" data-tab="seller">Sell a Property</button>
+        <button class="tab" type="button" data-tab="buyer">Buyer Buy Box</button>
+      </div>
 
-  document.getElementById("sellerMsg").textContent = "✅ Submitted!";
-  e.target.reset();
-});
+      <!-- SELLER PANEL -->
+      <div id="panel-seller" class="panel active">
+        <div class="formCard">
+          <div class="formHead">
+            <h3>Tell us about your property</h3>
+            <p class="muted">We buy in USA, UK, and Ireland — land included.</p>
+          </div>
 
+          <form id="sellerForm" class="form">
+            <!-- CONTACT -->
+            <div class="section">
+              <div class="sectionTitle">Contact</div>
+              <div class="grid3">
+                <label>
+                  Full Name *
+                  <input name="fullName" placeholder="Jane Seller" required />
+                </label>
+                <label>
+                  Phone *
+                  <input name="phone" placeholder="(419) 965-6293" required />
+                </label>
+                <label>
+                  Email *
+                  <input name="email" type="email" placeholder="you@example.com" required />
+                </label>
+              </div>
+            </div>
 
-// ==========================
-// BUYER FORM SUBMIT
-// ==========================
-document.getElementById("buyerForm")?.addEventListener("submit", (e) => {
-  e.preventDefault();
+            <!-- PROPERTY DETAILS -->
+            <div class="section">
+              <div class="sectionTitle">Property Details</div>
 
-  const fd = new FormData(e.target);
-  fd.append("formType", "buyer");
+              <div class="grid4">
+                <label class="col2">
+                  Street Address / Area *
+                  <input name="address" placeholder="123 Main St (or area if land)" required />
+                </label>
+                <label>
+                  City
+                  <input name="city" placeholder="Greensboro" />
+                </label>
+                <label>
+                  State / County
+                  <input name="state" placeholder="NC / County" />
+                </label>
+                <label>
+                  ZIP
+                  <input name="zip" placeholder="27401" />
+                </label>
+              </div>
 
-  fetch(SHEET_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: fd
-  });
+              <div class="grid4">
+                <label>
+                  Country *
+                  <select name="country" required>
+                    <option value="">Select</option>
+                    <option>USA</option>
+                    <option>UK</option>
+                    <option>Ireland</option>
+                  </select>
+                </label>
 
-  document.getElementById("buyerMsg").textContent = "✅ Saved!";
-  e.target.reset();
-});
+                <label>
+                  Property Type
+                  <select name="propertyType">
+                    <option value="">Select type</option>
+                    <option>Single Family</option>
+                    <option>Duplex / Multi</option>
+                    <option>Condo / Townhome</option>
+                    <option>Mobile Home</option>
+                    <option>Land</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+
+                <label>
+                  Beds
+                  <input name="beds" placeholder="3" />
+                </label>
+
+                <label>
+                  Baths
+                  <input name="baths" placeholder="2" />
+                </label>
+              </div>
+
+              <div class="grid4">
+                <label>
+                  Sq Ft
+                  <input name="sqft" placeholder="1400" />
+                </label>
+                <label>
+                  Lot Size / Acres
+                  <input name="lot" placeholder="0.25 / 2 acres" />
+                </label>
+                <label>
+                  Asking Price
+                  <input name="askingPrice" placeholder="$150,000" />
+                </label>
+                <label>
+                  Timeline
+                  <select name="timeline">
+                    <option value="">Select</option>
+                    <option>ASAP</option>
+                    <option>0–30 days</option>
+                    <option>30–60 days</option>
+                    <option>60–90 days</option>
+                    <option>Not sure</option>
+                  </select>
+                </label>
+              </div>
+
+<div class="grid2">
+  <label class="full">
+    Condition / Notes
+    <textarea name="notes" rows="4" placeholder="Repairs needed, occupancy, foundation/roof/HVAC, etc."></textarea>
+  </label>
+
+  <fieldset class="checkField">
+    <legend>Situation (check all that apply)</legend>
+
+    <div class="checkGrid checkGrid--3">
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Probate">
+        <span>Probate / Inheritance</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Pre-Foreclosure">
+        <span>Pre-Foreclosure</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Code Violations">
+        <span>Code Violations</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Vacant">
+        <span>Vacant</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Tired Landlord">
+        <span>Tired Landlord</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Just looking to sell">
+        <span>Just looking to sell</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="tags" value="Land">
+        <span>Land Deal</span>
+      </label>
+    </div>
+  </fieldset>
+</div> <!-- ✅ closes grid2 -->
+</div> <!-- ✅ closes PROPERTY DETAILS section -->
+
+<!-- CONTACT TIME -->
+<div class="section">
+              <div class="sectionTitle">Best time to contact</div>
+              <div class="grid3">
+                <label>
+                  Preferred Contact Method
+                  <select name="contactMethod">
+                    <option value="">Select</option>
+                    <option>Call</option>
+                    <option>Text</option>
+                    <option>Email</option>
+                  </select>
+                </label>
+                <label>
+                  Preferred Time Window
+                  <select name="contactWindow">
+                    <option value="">Select</option>
+                    <option>Morning</option>
+                    <option>Afternoon</option>
+                    <option>Evening</option>
+                    <option>Anytime</option>
+                  </select>
+                </label>
+                <label>
+                  Photo / Drive Link (optional)
+                  <input name="mediaLink" placeholder="Google Drive / Dropbox link" />
+                </label>
+              </div>
+            </div>
+
+            <div class="formFoot">
+              <small class="muted">By submitting, you agree we may contact you by phone, text, or email.</small>
+              <button class="btn gold" type="submit">Get My Offer</button>
+            </div>
+
+            <p id="sellerMsg" class="msg" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+
+      <!-- BUYER PANEL -->
+      <div id="panel-buyer" class="panel">
+        <div class="formCard">
+          <div class="formHead">
+            <h3>Share your buy box</h3>
+            <p class="muted">Tell us what you buy so we can send matched deals.</p>
+          </div>
+
+          <form id="buyerForm" class="form">
+            <!-- CONTACT -->
+            <div class="section">
+              <div class="sectionTitle">Contact</div>
+              <div class="grid3">
+                <label>
+                  Full Name *
+                  <input name="fullName" placeholder="John Buyer" required />
+                </label>
+                <label>
+                  Phone *
+                  <input name="phone" placeholder="(555) 555-5555" required />
+                </label>
+                <label>
+                  Email *
+                  <input name="email" type="email" placeholder="you@investor.com" required />
+                </label>
+              </div>
+            </div>
+
+            <!-- MARKETS & STRATEGY -->
+            <div class="section">
+              <div class="sectionTitle">Markets & Strategy</div>
+
+              <div class="grid4">
+                <label class="col2">
+                  Target Cities / Counties / States
+                  <input name="locations" placeholder="Example: NC (Greensboro, Winston-Salem), UK (Manchester), IE (Dublin)" />
+                </label>
+
+                <label>
+                  Markets *
+                  <select name="markets" required>
+                    <option value="">Select</option>
+                    <option>USA</option>
+                    <option>UK</option>
+                    <option>Ireland</option>
+                    <option>USA + UK</option>
+                    <option>USA + Ireland</option>
+                    <option>UK + Ireland</option>
+                    <option>USA + UK + Ireland</option>
+                  </select>
+                </label>
+
+                <label>
+                  Strategy
+                  <select name="strategy">
+                    <option value="">Select</option>
+                    <option>Fix & Flip</option>
+                    <option>Buy & Hold</option>
+                    <option>BRRRR</option>
+                    <option>Wholesale Buyer</option>
+                    <option>Development</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="grid4">
+                <label>
+                  Asset Types
+                  <select name="assetTypes">
+                    <option value="">Select</option>
+                    <option>SFR</option>
+                    <option>Townhome</option>
+                    <option>Condo</option>
+                    <option>Duplex / Multi</option>
+                    <option>Land</option>
+                    <option>Any</option>
+                  </select>
+                </label>
+
+                <label>
+                  Min Beds
+                  <input name="minBeds" placeholder="2" />
+                </label>
+
+                <label>
+                  Min Baths
+                  <input name="minBaths" placeholder="1" />
+                </label>
+
+                <label>
+                  Year Built (min)
+                  <input name="yearBuiltMin" placeholder="1950" />
+                </label>
+              </div>
+
+              <div class="grid4">
+                <label>
+                  Max Purchase Price
+                  <input name="maxPrice" placeholder="$250,000" />
+                </label>
+                <label>
+                  Rehab Level
+                  <select name="rehabLevel">
+                    <option value="">Select</option>
+                    <option>Cosmetic</option>
+                    <option>Light</option>
+                    <option>Medium</option>
+                    <option>Heavy</option>
+                    <option>Any</option>
+                  </select>
+                </label>
+                <label>
+                  Close Timeline
+                  <select name="closeTimeline">
+                    <option value="">Select</option>
+                    <option>0–14 days</option>
+                    <option>14–30 days</option>
+                    <option>30–45 days</option>
+                    <option>Flexible</option>
+                  </select>
+                </label>
+                <label>
+                  Proof of Funds?
+                  <select name="pof">
+                    <option value="">Select</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Can provide when needed</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="grid2">
+  <label class="full">
+    Notes / Buy Box Nuance
+    <textarea name="notes" rows="4" placeholder="Neighborhoods you prefer/avoid, HOA rules, septic/sewer, rental metrics, land use, etc."></textarea>
+  </label>
+
+  <fieldset class="checkField">
+    <legend>Deal types</legend>
+
+    <div class="checkGrid checkGrid--2">
+      <label class="checkItem">
+        <input type="checkbox" name="dealTypes" value="Assignment">
+        <span>Assignments</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="dealTypes" value="Double Close">
+        <span>Double Close</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="dealTypes" value="Novation">
+        <span>Novation</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="dealTypes" value="Direct Purchase">
+        <span>Direct Purchase</span>
+      </label>
+
+      <label class="checkItem">
+        <input type="checkbox" name="dealTypes" value="Land">
+        <span>Land Deals</span>
+      </label>
+    </div>
+    
+  </fieldset>
+   <label class="optIn">
+  <input type="checkbox" name="optIn" value="Yes" />
+  Send me off-market opportunities.
+</label>             
+
+</div> <!-- closes grid2 -->
+</div> <!-- closes MARKETS & STRATEGY section -->
+<label class="optIn">
+  <input type="checkbox" name="optIn" value="Yes" />
+  Send me off-market opportunities.
+</label>
+            
+<div class="formFoot">
+  <small class="muted">We only send deals that fit your buy box.</small>
+  <button class="btn gold" type="submit">Save My Buy Box</button>
+</div>
+      
+            <p id="buyerMsg" class="msg" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contactCard">
+      <h3>Questions? Let’s talk.</h3>
+      <p class="muted">We keep it simple, private, and professional. Reach out and we’ll move at your pace.</p>
+
+      <div class="contactGrid">
+        <a class="contact-pill big" href="tel:14199656293">📞 419-965-6293</a>
+        <a class="contact-pill big" href="mailto:clearpathpropertysolutions@gmail.com">✉️ clearpathpropertysolutions@gmail.com</a>
+      </div>
+    </section>
+
+    <footer class="footer2">
+      <p>© <span id="year"></span> Clear Path Property Solutions. All rights reserved.</p>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
