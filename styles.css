@@ -107,6 +107,14 @@ a{color:var(--text); text-decoration:none}
 .hero2__content p{margin:0; color: rgba(242,242,247,.85); line-height:1.45}
 .hero2__cta{display:flex; gap:10px; margin-top: 16px; flex-wrap:wrap}
 
+.hero2__content h2 {
+  color: #f5c542; /* gold */
+}
+
+.hero2__content p {
+  color: #e5e7eb; /* soft white / light gray */
+}
+
 /* Gallery */
 .gallery{
   display:grid;
