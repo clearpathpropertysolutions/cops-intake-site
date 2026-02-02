@@ -1,18 +1,37 @@
-const API_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
+// ====== PUT YOUR GOOGLE APPS SCRIPT WEB APP URL HERE ======
+const API_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// ---------- Tabs ----------
+function setTab(which) {
+  document.querySelectorAll(".tab").forEach(b =>
+    b.classList.toggle("active", b.dataset.tab === which)
+  );
+
+  document.querySelectorAll(".panel").forEach(p =>
+    p.classList.toggle("active", p.id === `panel-${which}`)
+  );
+
+  // Sync hero buttons style too
+  document.querySelectorAll(".hero2__cta button").forEach(b => {
+    const isActive = b.dataset.tab === which;
+    b.classList.toggle("gold", isActive);
+    b.classList.toggle("btn-outline", !isActive);
+  });
+}
+
+document.querySelectorAll("[data-tab]").forEach(btn => {
+  btn.addEventListener("click", () => setTab(btn.dataset.tab));
+});
+
+setTab("seller");
+
+// ---------- Form helpers ----------
 function formToObject(form) {
   const fd = new FormData(form);
   const obj = {};
-  for (const [k, v] of fd.entries()) {
-    if (k === "propertyTypes") {
-      obj.propertyTypes = obj.propertyTypes || [];
-      obj.propertyTypes.push(v);
-    } else {
-      obj[k] = v;
-    }
-  }
+  for (const [k, v] of fd.entries()) obj[k] = v;
   return obj;
 }
 
@@ -25,29 +44,7 @@ async function postJSON(payload) {
   return res.json();
 }
 
-// Buyer form
-const buyerForm = document.getElementById("buyerForm");
-const buyerMsg = document.getElementById("buyerMsg");
-
-buyerForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  buyerMsg.textContent = "Submitting...";
-  try {
-    const data = formToObject(buyerForm);
-    data.type = "buyer";
-    const out = await postJSON(data);
-    if (out.ok) {
-      buyerMsg.textContent = "✅ Buy box submitted. We’ll reach out soon.";
-      buyerForm.reset();
-    } else {
-      buyerMsg.textContent = "❌ Error: " + (out.error || "Unknown error");
-    }
-  } catch (err) {
-    buyerMsg.textContent = "❌ Error: " + err.message;
-  }
-});
-
-// Seller form
+// ---------- Seller submit ----------
 const sellerForm = document.getElementById("sellerForm");
 const sellerMsg = document.getElementById("sellerMsg");
 
@@ -58,13 +55,37 @@ sellerForm.addEventListener("submit", async (e) => {
     const data = formToObject(sellerForm);
     data.type = "seller";
     const out = await postJSON(data);
+
     if (out.ok) {
-      sellerMsg.textContent = "✅ Property submitted. We’ll review and contact you.";
+      sellerMsg.textContent = "✅ Submitted. We’ll contact you shortly.";
       sellerForm.reset();
     } else {
       sellerMsg.textContent = "❌ Error: " + (out.error || "Unknown error");
     }
   } catch (err) {
     sellerMsg.textContent = "❌ Error: " + err.message;
+  }
+});
+
+// ---------- Buyer submit ----------
+const buyerForm = document.getElementById("buyerForm");
+const buyerMsg = document.getElementById("buyerMsg");
+
+buyerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  buyerMsg.textContent = "Submitting...";
+  try {
+    const data = formToObject(buyerForm);
+    data.type = "buyer";
+    const out = await postJSON(data);
+
+    if (out.ok) {
+      buyerMsg.textContent = "✅ Submitted. We’ll send deals that match.";
+      buyerForm.reset();
+    } else {
+      buyerMsg.textContent = "❌ Error: " + (out.error || "Unknown error");
+    }
+  } catch (err) {
+    buyerMsg.textContent = "❌ Error: " + err.message;
   }
 });
