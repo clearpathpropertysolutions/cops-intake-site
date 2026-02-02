@@ -1,7 +1,7 @@
 // ==========================
 // CONFIG (ALWAYS AT THE TOP)
 // ==========================
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbXXXXXXXXXXXX/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbyJtPo3Bu8_GZsEQ3ypakbhhuUG59t9L4EP9TmSRRo2-TSjzQ0AAQsDy2T0vQr9wi2qDw/exec";
 
 
 // ==========================
